@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The Modern Web Developer — a structured student booklet covering HTML, CSS, Tailwind, JavaScript, React, Next.js, backend, databases, auth, and deployment.">
+<title>The Modern Web Developer — Student Booklet</title>
+<style>
+:root{
+  --bg:#f8fafc; --surface:#ffffff; --surface2:#f1f5f9; --text:#0f172a; --muted:#64748b;
+  --accent:#4f46e5; --accent-soft:#eef2ff; --border:#e2e8f0;
+  --code-bg:#0f172a; --code-text:#e2e8f0; --tip:#059669; --warn:#d97706; --exercise:#2563eb;
+  --radius:12px; --topbar-h:56px;
+}
+[data-theme="dark"]{
+  --bg:#0b1120; --surface:#111827; --surface2:#1e293b; --text:#e2e8f0; --muted:#94a3b8;
+  --accent:#818cf8; --accent-soft:#1e1b4b; --border:#1e293b;
+  --code-bg:#020617; --code-text:#e2e8f0;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--topbar-h) + 12px)}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.65}
+.topbar{position:fixed;inset:0 0 auto 0;height:var(--topbar-h);z-index:50;display:flex;align-items:center;gap:12px;
+  padding:0 16px;background:var(--surface);border-bottom:1px solid var(--border)}
+.topbar .brand{font-weight:800;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .brand span{color:var(--accent)}
+.topbar .spacer{flex:1}
+.btn{cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);
+  border-radius:8px;padding:7px 12px;font-size:.86rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.layout{display:flex;padding-top:var(--topbar-h)}
+.sidebar{position:fixed;top:var(--topbar-h);bottom:0;left:0;width:288px;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--border);padding:14px 12px 40px;
+  transition:transform .25s ease}
+.sidebar .search{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;
+  background:var(--bg);color:var(--text);font-size:.9rem;margin-bottom:12px}
+.sidebar .search:focus{outline:2px solid var(--accent);border-color:transparent}
+.navlink{display:block;padding:7px 10px;border-radius:8px;color:var(--text);text-decoration:none;
+  font-size:.88rem;font-weight:500;line-height:1.35}
+.navlink:hover{background:var(--surface2)}
+.navlink.active{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.navlink .sub{color:var(--muted);font-weight:400;font-size:.78rem;display:block}
+main{flex:1;margin-left:288px;padding:36px clamp(20px,6vw,72px) 120px}
+.content{max-width:860px}
+.chapter-title{font-size:1.9rem;font-weight:800;line-height:1.25;padding-top:44px;margin-bottom:20px;
+  border-bottom:3px solid var(--accent);padding-bottom:12px;scroll-margin-top:calc(var(--topbar-h) + 12px)}
+h2{font-size:1.35rem;font-weight:700;margin:38px 0 12px}
+h3{font-size:1.1rem;font-weight:700;margin:26px 0 8px}
+p{margin:10px 0}
+ul,ol{margin:10px 0 14px;padding-left:26px}
+li{margin:4px 0}
+a{color:var(--accent)}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.85em;
+  background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:1.5px 5px}
+.codeblock{background:var(--code-bg);color:var(--code-text);border-radius:var(--radius);
+  padding:16px 18px;overflow-x:auto;margin:14px 0;font-size:.83rem;line-height:1.6}
+.codeblock code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+.table-wrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:.87rem;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius)}
+th,td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:var(--surface2);font-weight:700;white-space:nowrap}
+blockquote{border-left:4px solid var(--muted);background:var(--surface);border-radius:0 var(--radius) var(--radius) 0;
+  padding:12px 16px;margin:14px 0;font-size:.92rem}
+blockquote.tip{border-color:var(--tip);background:color-mix(in srgb,var(--tip) 7%,var(--surface))}
+blockquote.warn{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,var(--surface))}
+blockquote.exercise{border-color:var(--exercise);background:color-mix(in srgb,var(--exercise) 7%,var(--surface))}
+hr{border:none;border-top:1px solid var(--border);margin:34px 0}
+.backtop{display:inline-block;margin-top:8px;font-size:.82rem;color:var(--muted);text-decoration:none}
+.backtop:hover{color:var(--accent)}
+/* Tracker */
+.tracker-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:6px 0 18px}
+.progress-shell{flex:1;min-width:220px;height:14px;background:var(--surface2);border:1px solid var(--border);border-radius:99px;overflow:hidden}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#a5b4fc);transition:width .35s ease}
+.progress-label{font-weight:800;font-size:.9rem;color:var(--accent);white-space:nowrap}
+.t-chapter{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin:12px 0;overflow:hidden}
+.t-ch-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none}
+.t-ch-head:hover{background:var(--surface2)}
+.t-ch-head .arrow{transition:transform .2s;color:var(--muted);font-size:.8rem}
+.t-chapter.open .arrow{transform:rotate(90deg)}
+.t-ch-head .t-title{font-weight:700;font-size:.95rem}
+.t-ch-head .t-done{margin-left:auto;font-size:.78rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.t-chapter.done-ch .t-title{color:var(--accent)}
+.t-body{display:none;border-top:1px solid var(--border);padding:12px 14px}
+.t-chapter.open .t-body{display:block}
+.t-ex{display:flex;align-items:center;gap:10px;padding:6px 4px;font-size:.88rem;border-bottom:1px dashed var(--border)}
+.t-ex:last-of-type{border-bottom:none}
+.t-ex input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+.t-ex span.done{text-decoration:line-through;color:var(--muted)}
+.t-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.t-meta label{font-size:.8rem;color:var(--muted);font-weight:600}
+.t-meta input[type=date],.t-meta select,.t-meta input[type=text]{background:var(--bg);color:var(--text);
+  border:1px solid var(--border);border-radius:8px;padding:6px 9px;font-size:.83rem}
+.t-meta input[type=text]{flex:1;min-width:160px}
+.ch-done-row{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:.85rem;font-weight:600}
+.ch-done-row input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+.reset-link{background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;text-decoration:underline;margin-top:14px}
+.reset-link:hover{color:var(--warn)}
+@media (max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:0 0 40px rgba(0,0,0,.25)}
+  main{margin-left:0;padding:28px 18px 100px}
+}
+@media print{
+  .topbar,.sidebar,.backtop,.reset-link{display:none!important}
+  main{margin:0;padding:0}
+  .content{max-width:none}
+  .chapter-title{page-break-before:always;border-bottom:2px solid #000}
+  .chapter-title:first-of-type{page-break-before:auto}
+  body{background:#fff;color:#000}
+  .codeblock{background:#f5f5f5;color:#000;border:1px solid #ccc}
+  .t-body{display:block!important}
+  a{color:#000}
+}
+</style>
+</head>
+<body id="top">
+<header class="topbar">
+  <button class="btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="brand">🌐 The Modern Web <span>Developer</span> — Student Booklet</div>
+  <div class="spacer"></div>
+  <button class="btn" id="printBtn">🖨️ Print</button>
+  <button class="btn" id="themeBtn">🌙 Dark</button>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <input class="search" id="search" type="search" placeholder="🔍 Search chapters…" aria-label="Search chapters">
+    <nav id="nav"></nav>
+  </aside>
+  <main>
+    <div class="content" id="content">
+<h1 id="the-modern-web-developer" class="chapter-title">The Modern Web Developer</h1>
+<p><strong>Student Booklet — From Zero to Full-Stack</strong></p>
+<blockquote><strong>Version 1.0 · September 2026</strong><br><strong>Author:</strong> [Your Name / Instructor Placeholder]<br><strong>Tagline:</strong> <em>Build, break, and rebuild — the only way to learn the web is to ship the web.</em></blockquote>
+<hr>
+<h1 id="1-cover-page-welcome" class="chapter-title">1. Cover Page &amp; Welcome</h1>
+<p>Welcome to the most practical web development course you'll ever take.</p>
+<p>This booklet assumes nothing except that you have a computer, a browser, and patience. By the end, you will be able to design, build, authenticate, deploy, and monitor a production-grade full-stack application.</p>
+<h2>How to Use This Booklet</h2>
+<h3>Reading Path</h3>
+<ol><li><strong>Sequential (recommended for solo learners):</strong> Chapters 1–9 in order. Each chapter assumes only prior chapters.</li><li><strong>Modular (cohort / bootcamp):</strong> Any chapter can be taught independently, but check the <strong>Prerequisite chain</strong> at each chapter's start.</li><li><strong>Reference mode:</strong> Use cheat sheets and appendices A–G as daily desk references.</li></ol>
+<h3>Exercise Conventions</h3>
+<ul><li>🧪 <strong>Guided Exercises</strong> walk you through with hints. Do them <em>before</em> reading the solution.</li><li>🏋️ <strong>Solo Challenges</strong> are unguided. Struggle for at least 30 minutes before seeking help.</li><li>🎯 <strong>Checkpoints</strong> are self-assessment quizzes. Score yourself honestly — below 70%? Revisit the chapter.</li><li>Code blocks are either <strong>runnable as-is</strong> (single files you can open in a browser) or clearly labeled with context.</li></ul>
+<h3>Icon Legend</h3>
+<div class="table-wrap"><table><thead><tr><th>Icon</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>💡</td><td><strong>Tip</strong> — practical advice from industry experience</td></tr>
+<tr><td>⚠️</td><td><strong>Warning</strong> — common trap that wastes hours</td></tr>
+<tr><td>🧪</td><td><strong>Exercise</strong> — hands-on practice required</td></tr>
+<tr><td>🎯</td><td><strong>Checkpoint</strong> — quiz or self-assessment</td></tr>
+<tr><td>📚</td><td><strong>Reference</strong> — cheat sheet material</td></tr>
+<tr><td>🔗</td><td><strong>Further Reading</strong> — curated external resources</td></tr>
+</tbody></table></div>
+<hr>
+<h1 id="2-table-of-contents" class="chapter-title">2. Table of Contents</h1>
+<div class="table-wrap"><table><thead><tr><th>Ch</th><th>Title</th><th>Est. Pages</th><th>Est. Hours</th></tr></thead><tbody>
+<tr><td>1</td><td>HTML — The Skeleton of the Web</td><td>~20</td><td>8–12</td></tr>
+<tr><td>2</td><td>CSS — Styling with Intent</td><td>~28</td><td>12–18</td></tr>
+<tr><td>3</td><td>Tailwind CSS — Speed Through Utilities</td><td>~20</td><td>8–12</td></tr>
+<tr><td>4</td><td>JavaScript — Making Pages Think</td><td>~36</td><td>20–30</td></tr>
+<tr><td>5</td><td>React — Component Architecture</td><td>~36</td><td>20–30</td></tr>
+<tr><td>6</td><td>Next.js — The Production Frontend</td><td>~30</td><td>16–24</td></tr>
+<tr><td>7</td><td>Backend Foundations — Node, Express, APIs</td><td>~28</td><td>14–20</td></tr>
+<tr><td>8</td><td>Databases &amp; Auth — Data That Persists</td><td>~28</td><td>16–24</td></tr>
+<tr><td>9</td><td>Integration &amp; Deployment — Shipping for Real</td><td>~20</td><td>10–16</td></tr>
+<tr><td>—</td><td>Capstone Project Brief</td><td>~8</td><td>40–60 (total)</td></tr>
+<tr><td>A–G</td><td>Appendices</td><td>~24</td><td>Reference</td></tr>
+</tbody></table></div>
+<hr>
+<h1 id="3-learning-roadmap" class="chapter-title">3. Learning Roadmap</h1>
+<pre class="codeblock"><code class="lang-">+---------------------------------------------------------------------+
+|  STAGE 1: FOUNDATIONS                    20-30 hrs                  |
+|  HTML --&gt; CSS --&gt; Tailwind                                            |
+|     &quot;Structure first. Style second. Speed third.&quot;                    |
+|           |                                                          |
+|           v                                                          |
+|  STAGE 2: INTERACTIVITY                  20-30 hrs                  |
+|  JavaScript (DOM, events, async)                                      |
+|     &quot;The page becomes an application.&quot;                               |
+|           |                                                          |
+|           v                                                          |
+|  STAGE 3: COMPONENT ARCHITECTURE         20-30 hrs                  |
+|  React --&gt; Next.js (App Router, SSR/SSG)                             |
+|     &quot;UI as a function of state. Rendered anywhere.&quot;                  |
+|           |                                                          |
+|           v                                                          |
+|  STAGE 4: FULL-STACK                     30-44 hrs                  |
+|  Node/Express --&gt; Databases --&gt; Auth &amp; Security                      |
+|     &quot;State outlives the browser tab.&quot;                                |
+|           |                                                          |
+|           v                                                          |
+|  STAGE 5: SHIPPING &amp; BEYOND              10-16 hrs                  |
+|  Integration --&gt; CI/CD --&gt; Deployment --&gt; Monitoring                 |
+|     &quot;Deployed and monitored beats perfect and local.&quot;                |
++---------------------------------------------------------------------+</code></pre>
+<h3>Prerequisite Chains</h3>
+<div class="table-wrap"><table><thead><tr><th>Before you start...</th><th>You must have finished...</th></tr></thead><tbody>
+<tr><td>CSS</td><td>HTML (Ch. 1)</td></tr>
+<tr><td>Tailwind</td><td>CSS fundamentals: box model, flexbox (Ch. 2 sections 3-4)</td></tr>
+<tr><td>JavaScript</td><td>HTML forms &amp; semantic structure (Ch. 1)</td></tr>
+<tr><td>React</td><td>JavaScript ES6+, modules, async (Ch. 4)</td></tr>
+<tr><td>Next.js</td><td>React hooks, components (Ch. 5)</td></tr>
+<tr><td>Backend</td><td>JavaScript async, fetch, JSON (Ch. 4)</td></tr>
+<tr><td>Databases &amp; Auth</td><td>Backend Foundations (Ch. 7)</td></tr>
+<tr><td>Capstone</td><td>Chapters 1–9</td></tr>
+</tbody></table></div>
+<blockquote>💡 <strong>Tip:</strong> Total realistic timeline: <strong>4–6 months at 10 hrs/week</strong>. Consistency beats intensity.</blockquote>
+<hr>
+<h1 id="chapter-1-html-the-skeleton-of-the-web" class="chapter-title">CHAPTER 1 — HTML: The Skeleton of the Web</h1>
+<blockquote><strong>Prerequisites:</strong> None. This is where you start.<br><strong>Time:</strong> 8–12 hours</blockquote>
+<h2>🎯 Learning Objectives</h2>
+<p>By the end of this chapter, you can:</p>
+<ol><li>Write a valid, complete HTML5 document from memory.</li><li>Choose the correct semantic element for any content type.</li><li>Build accessible forms with proper labels and validation.</li><li>Explain what <code>head</code> meta tags do and why they matter for SEO/sharing.</li><li>Audit a page for basic WCAG 2.2 AA compliance.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>Every website you've ever used — Google, Instagram, your bank — is HTML at its core. Frameworks like React and Next.js <em>generate</em> HTML, but the browser only understands HTML, CSS, and JavaScript. Developers who skip HTML end up building apps that are slow, invisible to search engines, and unusable with screen readers. HTML is not "easy" — it's <em>foundational</em>, and foundations determine how tall the building can go.</p>
+<h2>🧠 Core Concepts</h2>
+<h3>1.1 Anatomy of an HTML Document</h3>
+<p>Create a file called <code>index.html</code>, open it in your browser:</p>
+<pre class="codeblock"><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot; /&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;title&gt;My First Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello, Web.&lt;/h1&gt;
+  &lt;p&gt;This page is 100% valid HTML5.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Line</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>&lt;!DOCTYPE html&gt;</code></td><td>Tells the browser: "render in standards mode," not quirks mode</td></tr>
+<tr><td><code>&lt;html lang="en"&gt;</code></td><td>Root element; <code>lang</code> helps screen readers and SEO</td></tr>
+<tr><td><code>&lt;meta charset="UTF-8"&gt;</code></td><td>Character encoding — prevents mojibake (broken characters)</td></tr>
+<tr><td><code>viewport</code> meta</td><td>Makes the page responsive on mobile — <strong>never omit this</strong></td></tr>
+<tr><td><code>&lt;title&gt;</code></td><td>Browser tab text; primary SEO signal</td></tr>
+</tbody></table></div>
+<h3>1.2 Semantic Structure</h3>
+<p>Semantic HTML means: <strong>the tag describes the content.</strong> It's not just for readability — it's how assistive tech and search engines understand your page.</p>
+<pre class="codeblock"><code class="lang-html">&lt;header&gt;
+  &lt;nav&gt;
+    &lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;
+    &lt;a href=&quot;/about&quot;&gt;About&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;article&gt;
+    &lt;h1&gt;Why Semantic HTML Wins&lt;/h1&gt;
+    &lt;section&gt;
+      &lt;h2&gt;The Problem with Divs&lt;/h2&gt;
+      &lt;p&gt;A div tells nobody anything. A &lt;code&gt;nav&lt;/code&gt; tells everyone.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section&gt;
+      &lt;h2&gt;Accessibility Payoff&lt;/h2&gt;
+      &lt;p&gt;Screen reader users can jump between landmarks instantly.&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/article&gt;
+
+  &lt;aside&gt;
+    &lt;h2&gt;Related Reading&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;WCAG 2.2 Overview&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/aside&gt;
+&lt;/main&gt;
+
+&lt;footer&gt;
+  &lt;p&gt;&amp;copy; 2026 My Site&lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+<p><strong>Landmark cheat map:</strong></p>
+<div class="table-wrap"><table><thead><tr><th>Element</th><th>Use for</th></tr></thead><tbody>
+<tr><td><code>header</code></td><td>Introductory content, site banner</td></tr>
+<tr><td><code>nav</code></td><td>Primary navigation links <strong>only</strong></td></tr>
+<tr><td><code>main</code></td><td>The one unique thing this page is about (one per page!)</td></tr>
+<tr><td><code>article</code></td><td>Self-contained content (blog post, news item, card)</td></tr>
+<tr><td><code>section</code></td><td>Thematic grouping with a heading</td></tr>
+<tr><td><code>aside</code></td><td>Sidebar, tangential content</td></tr>
+<tr><td><code>figure</code> + <code>figcaption</code></td><td>Images with captions</td></tr>
+</tbody></table></div>
+<blockquote>⚠️ <strong>Warning:</strong> Don't choose tags based on how they <em>look</em>. <code>h1</code> isn't "big text" — it's "top-level heading." Style with CSS, structure with HTML.</blockquote>
+<h3>1.3 Text, Links, and Media</h3>
+<pre class="codeblock"><code class="lang-html">&lt;!-- Headings: exactly one h1 per page; never skip levels --&gt;
+&lt;h1&gt;Page Title&lt;/h1&gt;
+&lt;h2&gt;Section&lt;/h2&gt;
+&lt;h3&gt;Subsection&lt;/h3&gt;
+
+&lt;!-- Links: descriptive text, not &quot;click here&quot; --&gt;
+&lt;a href=&quot;https://developer.mozilla.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;
+  Read the MDN HTML reference
+&lt;/a&gt;
+
+&lt;!-- Images: alt text is required unless purely decorative --&gt;
+&lt;img src=&quot;team-photo.jpg&quot; alt=&quot;The five-person engineering team at a whiteboard&quot; /&gt;
+
+&lt;!-- Decorative image: empty alt so screen readers skip it --&gt;
+&lt;img src=&quot;divider-wave.svg&quot; alt=&quot;&quot; role=&quot;presentation&quot; /&gt;
+
+&lt;video controls poster=&quot;preview.jpg&quot;&gt;
+  &lt;source src=&quot;demo.mp4&quot; type=&quot;video/mp4&quot; /&gt;
+  Your browser does not support embedded video.
+&lt;/video&gt;</code></pre>
+<h3>1.4 Forms — Where HTML Earns Its Keep</h3>
+<pre class="codeblock"><code class="lang-html">&lt;form action=&quot;/subscribe&quot; method=&quot;POST&quot;&gt;
+  &lt;label for=&quot;email&quot;&gt;Email address&lt;/label&gt;
+  &lt;input
+    type=&quot;email&quot;
+    id=&quot;email&quot;
+    name=&quot;email&quot;
+    required
+    autocomplete=&quot;email&quot;
+    placeholder=&quot;you@example.com&quot;
+  /&gt;
+
+  &lt;label for=&quot;plan&quot;&gt;Choose a plan&lt;/label&gt;
+  &lt;select id=&quot;plan&quot; name=&quot;plan&quot; required&gt;
+    &lt;option value=&quot;&quot;&gt;— Select —&lt;/option&gt;
+    &lt;option value=&quot;free&quot;&gt;Free&lt;/option&gt;
+    &lt;option value=&quot;pro&quot;&gt;Pro&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;fieldset&gt;
+    &lt;legend&gt;Notifications&lt;/legend&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;newsletter&quot; /&gt; Weekly newsletter&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;product&quot; /&gt; Product updates&lt;/label&gt;
+  &lt;/fieldset&gt;
+
+  &lt;button type=&quot;submit&quot;&gt;Subscribe&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+<p><strong>Form rules worth memorizing:</strong></p>
+<ul><li>Every input gets a <code>&lt;label for="..."&gt;</code> matched by <code>id</code>. Never use <code>placeholder</code> as a label.</li><li><code>name</code> is what gets sent to the server; <code>id</code> is for labels/JS; <code>value</code> is the data.</li><li>Native validation (<code>required</code>, <code>type="email"</code>, <code>minlength</code>, <code>pattern</code>) works even before JavaScript exists.</li><li><code>fieldset</code> + <code>legend</code> groups related controls for screen readers.</li></ul>
+<blockquote>💡 <strong>Tip:</strong> Built-in input types — <code>email</code>, <code>url</code>, <code>tel</code>, <code>number</code>, <code>date</code>, <code>range</code>, <code>color</code> — give you free mobile keyboards and validation. Use them.</blockquote>
+<h3>1.5 Accessibility &amp; Meta Tags (WCAG Starts Here)</h3>
+<p>WCAG 2.2 AA is the industry bar. HTML covers most of it:</p>
+<pre class="codeblock"><code class="lang-html">&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot; /&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;meta name=&quot;description&quot; content=&quot;Learn full-stack web development from zero to deployment.&quot; /&gt;
+
+  &lt;!-- Social sharing (Open Graph) --&gt;
+  &lt;meta property=&quot;og:title&quot; content=&quot;The Modern Web Developer&quot; /&gt;
+  &lt;meta property=&quot;og:description&quot; content=&quot;A structured path to job-ready full-stack skills.&quot; /&gt;
+  &lt;meta property=&quot;og:image&quot; content=&quot;https://example.com/cover.png&quot; /&gt;
+
+  &lt;!-- Accessibility &amp; theme --&gt;
+  &lt;meta name=&quot;theme-color&quot; content=&quot;#0f172a&quot; /&gt;
+&lt;/head&gt;</code></pre>
+<p><strong>The HTML accessibility checklist:</strong></p>
+<ul><li>☐ Exactly one <code>h1</code>; headings don't skip levels</li><li>☐ All images have appropriate <code>alt</code> (or empty <code>alt=""</code> if decorative)</li><li>☐ All form inputs labeled</li><li>☐ Landmarks used (<code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>)</li><li>☐ Sufficient color contrast (covered in Ch. 2)</li></ul>
+<h2>🔍 Annotated Code Walkthrough: A Complete Landing Page</h2>
+<pre class="codeblock"><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;TaskFlow — the simple project board for small teams.&quot; /&gt;
+    &lt;title&gt;TaskFlow — Project boards for small teams&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header&gt;
+      &lt;nav aria-label=&quot;Main navigation&quot;&gt;
+        &lt;a href=&quot;/&quot;&gt;TaskFlow&lt;/a&gt;
+        &lt;a href=&quot;#features&quot;&gt;Features&lt;/a&gt;
+        &lt;a href=&quot;/login&quot;&gt;Log in&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+      &lt;section id=&quot;features&quot;&gt;
+        &lt;h1&gt;Ship work, not status updates&lt;/h1&gt;
+        &lt;p&gt;TaskFlow keeps your team focused with one honest board.&lt;/p&gt;
+        &lt;a href=&quot;/signup&quot; role=&quot;button&quot;&gt;Start free trial&lt;/a&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<ul><li><code>aria-label="Main navigation"</code> — if you have multiple navs (header + footer), label each so screen reader users know which is which.</li><li>The CTA is a plain <code>a</code> styled as a button. <strong>Rule:</strong> links navigate, buttons act. It's a navigation to <code>/signup</code>, so <code>a</code> is correct.</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<div class="table-wrap"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Using <code>div</code> for everything</td><td>Ask: "what <em>is</em> this content?" then pick the tag</td></tr>
+<tr><td><code>placeholder</code> instead of <code>label</code></td><td>Placeholders vanish on typing; labels persist</td></tr>
+<tr><td>Multiple <code>h1</code>s or skipped heading levels</td><td>One <code>h1</code>, then <code>h2</code> -&gt; <code>h3</code> in order</td></tr>
+<tr><td><code>a href="#"</code> for buttons</td><td>Use <code>button type="button"</code>; href="#" breaks scroll and semantics</td></tr>
+<tr><td>Missing <code>viewport</code> meta</td><td>Page renders zoomed-out on mobile</td></tr>
+<tr><td><code>img</code> without <code>alt</code></td><td>Screen readers read the filename aloud. Rude.</td></tr>
+<tr><td>Nesting interactive elements (<code>a</code> in <code>a</code>, <code>button</code> in <code>button</code>)</td><td>Invalid HTML — browsers do unpredictable repairs</td></tr>
+</tbody></table></div>
+<h2>🧪 Guided Exercises</h2>
+<p><strong>🧪 Exercise 1.1 — Personal Profile (Beginner)</strong> Build <code>profile.html</code>: your name as <code>h1</code>, a short bio in <code>p</code>, a photo with proper <code>alt</code>, an unordered list of your top 3 skills, and links to two sites you love.</p>
+<p><strong>🧪 Exercise 1.2 — Semantic Autopsy (Beginner-Intermediate)</strong> Take any news article page (open DevTools, Elements). Rebuild <em>only its skeleton</em> in HTML using semantic tags. No CSS allowed. Target: under 40 lines.</p>
+<p><strong>🧪 Exercise 1.3 — Registration Form (Intermediate)</strong> Build a sign-up form with: email (validated), password (min 8 chars, <code>minlength</code>), password confirm, country <code>select</code>, terms checkbox (<code>required</code>), and submit. Every input labeled. Test: does the browser block empty submissions without any JavaScript?</p>
+<p><strong>🧪 Exercise 1.4 — Accessibility Audit (Intermediate)</strong> Run Lighthouse (DevTools, Lighthouse, Accessibility) on three real websites. Record the three most common failures you find and which HTML fix would solve each.</p>
+<h2>🏋️ Solo Challenge: The Recipe Site</h2>
+<p>Build <code>recipe.html</code> for your favorite dish. Requirements:</p>
+<ul><li>Semantic structure: <code>header</code>, <code>nav</code>, <code>main</code>, <code>article</code>, <code>aside</code> (nutrition info), <code>footer</code></li><li>Ingredients in <code>ul</code>, steps in <code>ol</code> (ordered — steps have sequence!)</li><li>One <code>figure</code> with <code>figcaption</code> for the finished dish photo</li><li>A working "Jump to ingredients" link (in-page anchor)</li><li>A meta description and an <code>og:title</code></li></ul>
+<h2>🎯 Chapter Checkpoint</h2>
+<p><strong>Quiz (aim for 7/8):</strong></p>
+<ol><li>What's the difference between <code>id</code> and <code>name</code> on an input?</li><li>When is <code>alt=""</code> the <em>correct</em> choice?</li><li>Why is <code>a href="#"</code> harmful as a button substitute?</li><li>How many <code>main</code> elements may a page have?</li><li>What does the <code>viewport</code> meta tag do?</li><li>Write the minimal valid HTML5 document from memory.</li><li>What's the difference between <code>section</code> and <code>article</code>?</li><li>Name two HTML features that provide form validation without JavaScript.</li></ol>
+<p><strong>Mini-build:</strong> From a blank file, in under 10 minutes: blog post page with header/nav/main/article/footer, one image, one labeled input.</p>
+<p><strong>Score yourself:</strong> 8/8 -&gt; proceed. 6 or below -&gt; redo Exercises 1.1–1.3.</p>
+<h2>📚 Reference Cheat Sheet — HTML</h2>
+<div class="table-wrap"><table><thead><tr><th>Task</th><th>Syntax</th></tr></thead><tbody>
+<tr><td>Document boilerplate</td><td><code>&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;&lt;head&gt;...&lt;/head&gt;&lt;body&gt;...&lt;/body&gt;&lt;/html&gt;</code></td></tr>
+<tr><td>Comment</td><td><code>&lt;!-- comment --&gt;</code></td></tr>
+<tr><td>Link</td><td><code>&lt;a href="url" target="_blank" rel="noopener"&gt;text&lt;/a&gt;</code></td></tr>
+<tr><td>Image</td><td><code>&lt;img src="x.jpg" alt="description" width="400" height="300" /&gt;</code></td></tr>
+<tr><td>Table</td><td><code>&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;...&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;...</code></td></tr>
+<tr><td>Data list</td><td><code>&lt;dl&gt;&lt;dt&gt;Term&lt;/dt&gt;&lt;dd&gt;Definition&lt;/dd&gt;&lt;/dl&gt;</code></td></tr>
+<tr><td>Text input attrs</td><td><code>required</code>, <code>minlength</code>, <code>maxlength</code>, <code>pattern</code>, <code>placeholder</code>, <code>value</code>, <code>disabled</code>, <code>readonly</code></td></tr>
+<tr><td>Button types</td><td><code>type="submit"</code> / <code>"button"</code> / <code>"reset"</code> — always specify!</td></tr>
+<tr><td>In-page anchor</td><td><code>&lt;a href="#features"&gt;</code> + <code>&lt;section id="features"&gt;</code></td></tr>
+<tr><td>ARIA (use sparingly)</td><td><code>aria-label</code>, <code>aria-labelledby</code>, <code>aria-hidden</code></td></tr>
+</tbody></table></div>
+<h2>🔗 Further Reading</h2>
+<ul><li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element" target="_blank" rel="noopener">HTML elements reference</a></li><li><a href="https://web.dev/learn/html" target="_blank" rel="noopener">web.dev — Learn HTML</a></li><li><a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener">WCAG 2.2 Quick Reference</a></li></ul>
+<h3>🎉 You now know how to…</h3>
+<p>Write valid, semantic, accessible HTML that search engines can index and screen readers can navigate. Every framework you'll ever use outputs this.</p>
+<hr>
+<h1 id="chapter-2-css-styling-with-intent" class="chapter-title">CHAPTER 2 — CSS: Styling with Intent</h1>
+<blockquote><strong>Prerequisites:</strong> Chapter 1<br><strong>Time:</strong> 12–18 hours</blockquote>
+<h2>🎯 Learning Objectives</h2>
+<ol><li>Explain the cascade and predict which rule wins.</li><li>Use the box model, flexbox, and grid to lay out any design.</li><li>Build responsive layouts with media queries and fluid units.</li><li>Write maintainable CSS with custom properties and sensible naming.</li><li>Create animations and transitions that respect <code>prefers-reduced-motion</code>.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>CSS is where users judge your work. Research consistently shows users form aesthetic judgments in about 50 milliseconds. But CSS isn't just paint — it's the layout engine, the responsive strategy, and half of accessibility (contrast, focus states, zoom support). Tailwind (Ch. 3) and component styling in React all compile down to CSS. Understand the fundamentals, and no design will intimidate you.</p>
+<h2>🧠 Core Concepts</h2>
+<h3>2.1 How CSS Works: Cascade, Specificity, Inheritance</h3>
+<pre class="codeblock"><code class="lang-css">/* A rule = selector + declaration block */
+p {
+  color: #334155;        /* declaration: property : value */
+  font-size: 1.125rem;
+}</code></pre>
+<p><strong>Three ways to attach CSS:</strong> (1) inline <code>style=""</code> — avoid; (2) <code>style</code> in <code>head</code> — fine for demos; (3) external stylesheet — <strong>always do this in real projects</strong>.</p>
+<p><strong>Specificity (higher wins):</strong></p>
+<div class="table-wrap"><table><thead><tr><th>Selector type</th><th>Specificity</th><th>Example</th></tr></thead><tbody>
+<tr><td>Inline style</td><td>1000</td><td><code>style="color:red"</code></td></tr>
+<tr><td>ID</td><td>100</td><td><code>#submit-btn</code></td></tr>
+<tr><td>Class / attribute / pseudo-class</td><td>10</td><td><code>.card</code>, <code>[type="email"]</code>, <code>:hover</code></td></tr>
+<tr><td>Element / pseudo-element</td><td>1</td><td><code>p</code>, <code>::before</code></td></tr>
+</tbody></table></div>
+<pre class="codeblock"><code class="lang-css">/* Who wins on this button? */
+button { color: black; }              /* 1    — loses */
+.btn   { color: blue; }               /* 10   — loses */
+#save  { color: green; }              /* 100  — WINS */</code></pre>
+<blockquote>⚠️ <strong>Warning:</strong> When CSS "doesn't work," 80% of the time it's a specificity battle you didn't know you were fighting. Don't reach for <code>!important</code> — that's surrender, not strategy. Restructure selectors instead.</blockquote>
+<p><strong>Inheritance:</strong> text properties (<code>color</code>, <code>font-*</code>) inherit from parent; box properties (<code>margin</code>, <code>border</code>) don't. You can force inheritance: <code>box-sizing: inherit;</code>.</p>
+<p><strong>The box-sizing reset (put this at the top of every project):</strong></p>
+<pre class="codeblock"><code class="lang-css">*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+}</code></pre>
+<h3>2.2 The Box Model</h3>
+<p>Every element is a box: <strong>content -&gt; padding -&gt; border -&gt; margin</strong>.</p>
+<pre class="codeblock"><code class="lang-css">.card {
+  width: 300px;
+  padding: 24px;        /* space inside the border */
+  border: 2px solid #e2e8f0;
+  margin: 16px auto;    /* auto L/R centers a block with a set width */
+}</code></pre>
+<p>[DIAGRAM: Box model — concentric layers labeled content/padding/border/margin]</p>
+<blockquote>💡 <strong>Tip:</strong> With <code>box-sizing: border-box</code> (the reset above), <code>width: 300px</code> means the <em>whole visible box</em> is 300px including padding and border. Without it, padding gets added on top — the #1 beginner layout bug.</blockquote>
+<h3>2.3 Flexbox — One Dimension</h3>
+<pre class="codeblock"><code class="lang-css">.navbar {
+  display: flex;
+  justify-content: space-between;  /* main axis (horizontal by default) */
+  align-items: center;             /* cross axis (vertical) */
+  gap: 1rem;                       /* modern spacing — no margin hacks */
+}
+
+.navbar .spacer { margin-left: auto; } /* push everything after it right */</code></pre>
+<p>[DIAGRAM: Flexbox axes — main axis arrow left-to-right, cross axis top-to-bottom]</p>
+<p><strong>Properties:</strong> on the <em>parent</em> -&gt; <code>display</code>, <code>flex-direction</code>, <code>justify-content</code>, <code>align-items</code>, <code>gap</code>, <code>flex-wrap</code>. On <em>children</em> -&gt; <code>flex: 1</code>, <code>align-self</code>, <code>order</code>, <code>flex-shrink: 0</code>.</p>
+<pre class="codeblock"><code class="lang-css">.card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.card-row &gt; * {
+  flex: 1 1 250px;   /* grow shrink basis — &quot;be at least 250px, share space&quot; */
+}</code></pre>
+<h3>2.4 Grid — Two Dimensions</h3>
+<pre class="codeblock"><code class="lang-css">.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}</code></pre>
+<p>That single line gives you a <strong>fully responsive card grid with zero media queries</strong>. <code>auto-fit</code> collapses empty tracks; <code>minmax(220px, 1fr)</code> means "never smaller than 220px, share the rest equally."</p>
+<pre class="codeblock"><code class="lang-css">.page-layout {
+  display: grid;
+  grid-template-areas:
+    &quot;header header&quot;
+    &quot;sidebar main&quot;
+    &quot;footer footer&quot;;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+.page-layout &gt; header { grid-area: header; }
+/* etc. — explicit areas beat numeric line math for app shells */</code></pre>
+<p>[DIAGRAM: Grid areas layout — labeled header/sidebar/main/footer]</p>
+<h3>2.5 Responsive Design</h3>
+<pre class="codeblock"><code class="lang-css">/* Mobile-first: base styles for small screens, then enhance */
+.container {
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {   /* tablet and up */
+  .container { padding: 2rem; font-size: 1.125rem; }
+}
+
+@media (min-width: 1024px) {  /* desktop and up */
+  .container { max-width: 72rem; margin-inline: auto; }
+}</code></pre>
+<p><strong>Fluid units cheat:</strong></p>
+<div class="table-wrap"><table><thead><tr><th>Unit</th><th>Meaning</th><th>Use for</th></tr></thead><tbody>
+<tr><td><code>rem</code></td><td>Relative to root font size (16px default)</td><td>Almost everything</td></tr>
+<tr><td><code>em</code></td><td>Relative to the element's font size</td><td>Component-internal spacing</td></tr>
+<tr><td><code>%</code> / <code>vw</code> / <code>vh</code></td><td>Container / viewport percentage</td><td>Widths, hero sections</td></tr>
+<tr><td><code>clamp(min, preferred, max)</code></td><td>Fluid interpolation</td><td>Typography: <code>font-size: clamp(1rem, 0.6rem + 2vw, 1.5rem)</code></td></tr>
+</tbody></table></div>
+<blockquote>💡 <strong>Tip:</strong> <code>min()</code>, <code>max()</code>, <code>clamp()</code> and container queries have replaced <em>most</em> media queries in modern CSS. <code>clamp()</code> alone handles fluid typography.</blockquote>
+<h3>2.6 Transitions, Animations, and Custom Properties</h3>
+<pre class="codeblock"><code class="lang-css">:root {
+  --color-primary: #4f46e5;
+  --radius: 0.5rem;
+}
+
+.button {
+  background: var(--color-primary);
+  border-radius: var(--radius);
+  transition: background 150ms ease, transform 150ms ease;
+}
+.button:hover { background: #4338ca; transform: translateY(-2px); }
+
+@keyframes pulse {
+  50% { transform: scale(1.05); }
+}
+.badge { animation: pulse 2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;  /* accessibility override */
+    transition-duration: 0.01ms !important;
+  }
+}</code></pre>
+<blockquote>⚠️ <strong>Warning:</strong> Only <code>transform</code> and <code>opacity</code> are cheap to animate. Animating <code>width</code>, <code>height</code>, or <code>top/left</code> triggers layout recalculation and jank.</blockquote>
+<p><strong>Accessibility:</strong> always check contrast (WCAG AA: 4.5:1 for text, 3:1 for large text). Chrome DevTools color picker shows the ratio. Never remove focus outlines without replacing them: <code>:focus-visible { outline: 2px solid var(--color-primary); }</code>.</p>
+<h2>🔍 Annotated Code Walkthrough: A Pricing Card</h2>
+<pre class="codeblock"><code class="lang-html">&lt;section class=&quot;pricing-card&quot;&gt;
+  &lt;h2&gt;Pro&lt;/h2&gt;
+  &lt;p class=&quot;price&quot;&gt;$12&lt;span&gt;/mo&lt;/span&gt;&lt;/p&gt;
+  &lt;ul&gt;...&lt;/ul&gt;
+  &lt;a class=&quot;button&quot; href=&quot;/checkout&quot;&gt;Choose Pro&lt;/a&gt;
+&lt;/section&gt;</code></pre>
+<pre class="codeblock"><code class="lang-css">.pricing-card {
+  display: flex;              /* stack children vertically */
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  max-width: 320px;
+}
+
+.price span {                /* &quot;12&quot; big, &quot;/mo&quot; small */
+  font-size: 0.5em;
+  color: #64748b;
+}
+
+.button {
+  margin-top: auto;           /* pins button to card bottom — flexbox trick */
+  text-align: center;
+  padding: 0.75rem 1rem;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+}</code></pre>
+<ul><li><code>flex-direction: column</code> turns the main axis vertical, so <code>margin-top: auto</code> pushes the button to the bottom — this makes equal-height cards trivially.</li><li><code>font-size: 0.5em</code> is relative to the parent's font size — the elegant way to size a suffix.</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<div class="table-wrap"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Forgetting <code>box-sizing: border-box</code></td><td>Add the reset; always</td></tr>
+<tr><td>Centering with <code>margin-top</code> pixel guesses</td><td>Flexbox: <code>display:flex; justify-content:center; align-items:center</code> on the parent</td></tr>
+<tr><td><code>position: absolute</code> to escape layout flow</td><td>Ask if flex/grid can do it first</td></tr>
+<tr><td><code>!important</code> everywhere</td><td>Lower-specificity fix or restructure</td></tr>
+<tr><td>Pixel-perfect on one screen size</td><td>Design mobile-first, test at 360px and 1440px</td></tr>
+<tr><td><code>display: none</code> to hide content from screen readers</td><td>Use a visually-hidden class if it must stay accessible, or remove from DOM</td></tr>
+<tr><td>Animating layout properties</td><td>Stick to <code>transform</code> + <code>opacity</code></td></tr>
+</tbody></table></div>
+<h2>🧪 Guided Exercises</h2>
+<p><strong>🧪 Exercise 2.1 — Specificity Detective (Beginner)</strong> Given three rules targeting the same <code>p</code>, predict the winner before testing: <code>p {}</code>, <code>.text {}</code>, <code>#intro {}</code>. Then test in DevTools. Now reorder the rules in the file — did the winner change?</p>
+<p><strong>🧪 Exercise 2.2 — Holy Grail Layout (Intermediate)</strong> Header, footer, 240px sidebar, fluid main — using <strong>Grid areas</strong>, <code>min-height: 100vh</code>, and zero floats. Sidebar collapses below content on screens under 768px.</p>
+<p><strong>🧪 Exercise 2.3 — Flexbox Nav Bar (Beginner-Intermediate)</strong> Logo left, three links right, one highlighted CTA button. Use <code>gap</code> and <code>margin-left: auto</code>. Add <code>:hover</code> lift + shadow transition.</p>
+<p><strong>🧪 Exercise 2.4 — Responsive Card Grid (Intermediate)</strong> Three cards to two on tablet to one on mobile, <em>without media queries</em> (use <code>auto-fit</code> + <code>minmax</code>). Cards equal height, buttons bottom-aligned.</p>
+<p><strong>🧪 Exercise 2.5 — Fluid Type + Dark-Aware Variables (Advanced)</strong> Headings scale with <code>clamp()</code>. Define <code>--bg</code>/<code>--text</code> in <code>:root</code> and flip them inside <code>@media (prefers-color-scheme: dark)</code>.</p>
+<h2>🏋️ Solo Challenge: Recreate a Pricing Page</h2>
+<p>Pick any SaaS pricing page (e.g., a well-known tool). Recreate it <em>from a screenshot</em> in HTML + CSS only. Constraints: semantic HTML, one stylesheet, mobile-first, at least one <code>clamp()</code>, one CSS variable, focus-visible styles. Compare side-by-side when done.</p>
+<h2>🎯 Chapter Checkpoint</h2>
+<p><strong>Quiz (aim for 7/9):</strong></p>
+<ol><li>Calculate specificity: <code>nav ul li a {}</code> vs <code>.nav a {}</code> — who wins?</li><li>What does <code>flex: 1 1 250px</code> mean, value by value?</li><li>Why is <code>gap</code> better than <code>margin-right</code> on flex children?</li><li>Explain <code>min-height: 100vh</code> on a grid layout shell.</li><li>What's the mobile-first philosophy, and why <code>min-width</code> queries?</li><li>Write a <code>clamp()</code> for headings between 1.5rem and 3rem.</li><li>How do you respect <code>prefers-reduced-motion</code>?</li><li>What's the WCAG AA contrast ratio for body text?</li><li>When does <code>margin: 0 auto</code> center an element?</li></ol>
+<p><strong>Mini-build:</strong> In 15 minutes, from scratch: centered card (max-width 400px, radius, shadow), title, paragraph, button — using only flexbox/grid, no floats.</p>
+<h2>📚 Reference Cheat Sheet — CSS</h2>
+<div class="table-wrap"><table><thead><tr><th>Task</th><th>Syntax</th></tr></thead><tbody>
+<tr><td>Center anything</td><td><code>display:grid; place-items:center</code> (parent)</td></tr>
+<tr><td>Responsive card grid</td><td><code>grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem</code></td></tr>
+<tr><td>Equal-height flex children</td><td>parent <code>display:flex</code>; children <code>flex:1</code></td></tr>
+<tr><td>Pin element to flex end</td><td><code>margin-top: auto</code> (column) / <code>margin-left: auto</code> (row)</td></tr>
+<tr><td>Hide visually, keep for screen readers</td><td><code>.sr-only { position:absolute; width:1px; height:1px; clip-path: inset(50%); overflow:hidden; }</code></td></tr>
+<tr><td>Fluid type</td><td><code>font-size: clamp(1rem, 0.6rem + 2vw, 1.5rem)</code></td></tr>
+<tr><td>Sticky header</td><td><code>position: sticky; top: 0; z-index: 10</code></td></tr>
+<tr><td>Custom property</td><td><code>--x: value;</code> then <code>var(--x, fallback)</code></td></tr>
+<tr><td>Transition</td><td><code>transition: property duration easing</code></td></tr>
+<tr><td>Dark scheme</td><td><code>@media (prefers-color-scheme: dark) { :root { --bg:#0f172a; --text:#e2e8f0; } }</code></td></tr>
+</tbody></table></div>
+<h2>🔗 Further Reading</h2>
+<ul><li><a href="https://web.dev/learn/css" target="_blank" rel="noopener">web.dev — Learn CSS</a></li><li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener">CSS Tricks — Complete Guide to Flexbox</a></li><li><a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="noopener">CSS Tricks — Complete Guide to Grid</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion" target="_blank" rel="noopener">MDN — prefers-reduced-motion</a></li></ul>
+<h3>🎉 You now know how to…</h3>
+<p>Lay out any design with flexbox and grid, make it responsive without tears, and animate respectfully. You're 90% ready for Tailwind — which is just these ideas, pre-packaged.</p>
+<hr>
+<h1 id="chapter-3-tailwind-css-speed-through-utilities" class="chapter-title">CHAPTER 3 — Tailwind CSS: Speed Through Utilities</h1>
+<blockquote><strong>Prerequisites:</strong> Chapter 2 (box model, flexbox, responsive units)<br><strong>Time:</strong> 8–12 hours</blockquote>
+<h2>🎯 Learning Objectives</h2>
+<ol><li>Explain the utility-first philosophy and when to use component extraction.</li><li>Set up Tailwind in a project via the CLI.</li><li>Compose layouts, spacing, and typography purely with utilities.</li><li>Use responsive, state, and dark-mode variants fluently.</li><li>Configure a design system via theme tokens.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>Writing raw CSS is powerful but slow at scale — you invent class names, jump between files, and re-solve the same spacing problems daily. Tailwind compresses that: every project shares one vocabulary (<code>flex</code>, <code>p-4</code>, <code>text-slate-700</code>), designs stay consistent by construction, and you never write a stylesheet from scratch again. Tailwind is now the default styling layer of the React/Next.js ecosystem — you'll meet it again in Chapters 5 and 6.</p>
+<h2>🧠 Core Concepts</h2>
+<h3>3.1 Setup (2026 CLI — standalone, no framework needed)</h3>
+<pre class="codeblock"><code class="lang-bash"># In your project folder
+npm install tailwindcss @tailwindcss/cli
+npx @tailwindcss/cli -i ./src/input.css -o ./dist/output.css --watch</code></pre>
+<pre class="codeblock"><code class="lang-css">/* src/input.css — the new v4 style: one import line */
+@import &quot;tailwindcss&quot;;
+
+/* your custom design tokens live here */
+@theme {
+  --color-brand: #4f46e5;
+  --font-display: &quot;Inter&quot;, sans-serif;
+}</code></pre>
+<pre class="codeblock"><code class="lang-html">&lt;link href=&quot;./dist/output.css&quot; rel=&quot;stylesheet&quot; /&gt;</code></pre>
+<blockquote>⚠️ <strong>Warning:</strong> You'll find older tutorials using <code>tailwind.config.js</code> + <code>@tailwind base;</code> directives. That's Tailwind v3. The modern v4 approach above uses CSS-first config. Both exist in the wild — learn to recognize either.</blockquote>
+<h3>3.2 The Utility-First Mindset</h3>
+<p>Instead of naming and styling <code>.pricing-card</code> in CSS, you <em>describe</em> the element inline:</p>
+<pre class="codeblock"><code class="lang-html">&lt;!-- Raw CSS way: invent a class, style it elsewhere --&gt;
+&lt;div class=&quot;card&quot;&gt;...&lt;/div&gt;
+
+&lt;!-- Tailwind way: compose utilities on the element --&gt;
+&lt;div class=&quot;max-w-sm rounded-2xl border border-slate-200 bg-white p-6 shadow-sm&quot;&gt;
+  ...
+&lt;/div&gt;</code></pre>
+<p><strong>The mental mapping (you already know the CSS!):</strong></p>
+<div class="table-wrap"><table><thead><tr><th>Utility</th><th>CSS it generates</th><th>You learned in Ch. 2 as…</th></tr></thead><tbody>
+<tr><td><code>p-4</code></td><td><code>padding: 1rem</code></td><td>box model</td></tr>
+<tr><td><code>flex items-center justify-between</code></td><td><code>display:flex; align-items:center; justify-content:space-between</code></td><td>flexbox</td></tr>
+<tr><td><code>grid grid-cols-3 gap-6</code></td><td><code>display:grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem</code></td><td>grid</td></tr>
+<tr><td><code>mx-auto max-w-6xl</code></td><td><code>margin-inline:auto; max-width: 72rem</code></td><td>centering</td></tr>
+<tr><td><code>text-slate-700 text-lg font-semibold</code></td><td>color, size, weight</td><td>typography</td></tr>
+</tbody></table></div>
+<p>The spacing scale is the key to everything: <code>p-1</code>=0.25rem, <code>p-2</code>=0.5rem, <code>p-4</code>=1rem, <code>p-8</code>=2rem. <strong>One consistent scale across the whole project.</strong></p>
+<blockquote>💡 <strong>Tip:</strong> Don't memorize utilities — type what you want in prose ("medium padding, rounded, shadow") and let your editor's Tailwind autocomplete translate. Build the mental mapping instead.</blockquote>
+<h3>3.3 Responsive &amp; State Variants</h3>
+<p>Variants are prefixes, stacked left-to-right, mobile-first:</p>
+<pre class="codeblock"><code class="lang-html">&lt;button class=&quot;bg-indigo-600 px-4 py-2 text-white
+               hover:bg-indigo-500              &lt;!-- state --&gt;
+               focus-visible:outline-2           &lt;!-- a11y --&gt;
+               disabled:opacity-50               &lt;!-- state --&gt;
+               md:px-6                           &lt;!-- &gt;=768px --&gt;
+               lg:px-8&quot;&gt;                         &lt;!-- &gt;=1024px --&gt;
+  Continue
+&lt;/button&gt;</code></pre>
+<p>That single element, zero custom CSS, is fully responsive, keyboard-accessible, and handles disabled state. Notice <code>focus-visible</code> — same accessibility discipline as Chapter 2.</p>
+<h3>3.4 Component Extraction — <code>@apply</code> and the "When"</h3>
+<p>When a pattern repeats (cards, buttons, nav bars), stop duplicating 8 utilities across 12 files. Extract a component class:</p>
+<pre class="codeblock"><code class="lang-css">@layer components {
+  .btn {
+    @apply rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white
+           transition hover:bg-indigo-500 focus-visible:outline-2
+           disabled:opacity-50;
+  }
+  .btn-secondary { @apply btn bg-slate-200 text-slate-900 hover:bg-slate-300; }
+}</code></pre>
+<pre class="codeblock"><code class="lang-html">&lt;button class=&quot;btn&quot;&gt;Save&lt;/button&gt;
+&lt;a class=&quot;btn btn-secondary&quot; href=&quot;/docs&quot;&gt;Read docs&lt;/a&gt;</code></pre>
+<p><strong>Rule of thumb:</strong> extract at 3+ usages. A one-off stays inline.</p>
+<blockquote>⚠️ <strong>Warning:</strong> Over-extraction kills Tailwind's advantages (grep-ability, no naming). Under-extraction creates 400-line class attributes. Balance.</blockquote>
+<h3>3.5 Dark Mode</h3>
+<pre class="codeblock"><code class="lang-css">/* input.css */
+@custom-variant dark (&amp;:where(.dark, .dark *));</code></pre>
+<pre class="codeblock"><code class="lang-html">&lt;html class=&quot;dark&quot;&gt;
+  &lt;body class=&quot;bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100&quot;&gt;
+    ...
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>The <code>.dark</code> class on <code>html</code> is toggled by JavaScript (Ch. 4) and persisted — the standard pattern you'll reuse in React (Ch. 5).</p>
+<h3>3.6 The Design-System Mindset</h3>
+<p>Tailwind's real gift isn't speed — it's <strong>constraints</strong>. Spacing, colors, and radii come from a fixed scale, so "looks off by a pixel" bugs disappear. Extend it deliberately, not randomly:</p>
+<pre class="codeblock"><code class="lang-css">@theme {
+  --color-brand: #4f46e5;
+  --color-brand-light: #818cf8;
+  --font-display: &quot;Inter&quot;, sans-serif;
+}</code></pre>
+<pre class="codeblock"><code class="lang-html">&lt;h1 class=&quot;font-display text-4xl text-brand&quot;&gt;Your brand, systematized&lt;/h1&gt;</code></pre>
+<h2>🔍 Annotated Code Walkthrough: A Complete Pricing Card (Ch. 2 -&gt; Ch. 3)</h2>
+<p>Compare with Chapter 2's card:</p>
+<pre class="codeblock"><code class="lang-html">&lt;section class=&quot;flex max-w-xs flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:shadow-md&quot;&gt;
+  &lt;h2 class=&quot;text-lg font-semibold text-slate-900&quot;&gt;Pro&lt;/h2&gt;
+  &lt;p class=&quot;text-4xl font-bold text-slate-900&quot;&gt;$12&lt;span class=&quot;text-base font-normal text-slate-500&quot;&gt;/mo&lt;/span&gt;&lt;/p&gt;
+  &lt;ul class=&quot;flex flex-col gap-2 text-sm text-slate-600&quot;&gt;...&lt;/ul&gt;
+  &lt;a href=&quot;/checkout&quot; class=&quot;mt-auto rounded-lg bg-indigo-600 px-4 py-2.5 text-center font-semibold text-white transition hover:bg-indigo-500&quot;&gt;
+    Choose Pro
+  &lt;/a&gt;
+&lt;/section&gt;</code></pre>
+<ul><li><code>flex flex-col</code> + <code>gap-4</code> replaces all manual margins — the <em>gap property</em> you learned in Ch. 2.</li><li><code>mt-auto</code> on the link = the same "pin to bottom" trick, as a utility.</li><li><code>transition hover:shadow-md</code> — the Ch. 2 hover lift, in four tokens.</li><li>Notice: no stylesheet was written. The HTML is self-describing.</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<div class="table-wrap"><table><thead><tr><th>Mistake</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Long unreadable class strings</td><td>Extract <code>.btn</code>-style component classes at 3+ usages; format with <code>prettier-plugin-tailwindcss</code></td></tr>
+<tr><td>Fighting the spacing scale with arbitrary values (<code>w-[317px]</code>)</td><td>Use the scale; arbitrary values are escape hatches, not a lifestyle</td></tr>
+<tr><td>Removing focus styles (<code>outline-none</code> without replacement)</td><td>Always pair with <code>focus-visible:</code> styles</td></tr>
+<tr><td>Dark mode forgotten until the end</td><td>Add <code>dark:</code> variants as you build, not after</td></tr>
+<tr><td>Copying class lists between files by hand</td><td>Extract; or use editor multi-cursor + Tailwind extension</td></tr>
+<tr><td><code>@apply</code> with variants that don't exist in your layer</td><td>Variants work inside <code>@apply</code> in v4, but keep component classes simple</td></tr>
+</tbody></table></div>
+<h2>🧪 Guided Exercises</h2>
+<p><strong>🧪 Exercise 3.1 — Utility Translation (Beginner)</strong> Take your Chapter 2 Exercise 2.3 navbar CSS and rewrite the element with utilities only, no stylesheet. Every property must map to a utility.</p>
+<p><strong>🧪 Exercise 3.2 — Stats Bar (Beginner-Intermediate)</strong> Four stats in a row on desktop, 2x2 grid on mobile: <code>grid grid-cols-2 md:grid-cols-4</code>, big numbers, small labels. Center everything with utilities only.</p>
+<p><strong>🧪 Exercise 3.3 — Button System (Intermediate)</strong> Build <code>.btn</code>, <code>.btn-secondary</code>, <code>.btn-ghost</code>, and <code>.btn-danger</code> as component classes with <code>@apply</code>, each with hover, focus-visible, disabled, and dark-mode variants. Prove reusability with a form (3 buttons), a nav (2), and a modal footer (2).</p>
+<p><strong>🧪 Exercise 3.4 — Dark Mode Toggle Prep (Intermediate)</strong> Build a landing section that works fully in <code>dark:</code> mode. Write the tiny JS toggle (you may peek ahead): <code>document.documentElement.classList.toggle('dark')</code>.</p>
+<h2>🏋️ Solo Challenge: Pricing Page, Tailwind Edition</h2>
+<p>Rebuild your Chapter 2 Solo Challenge pricing page in Tailwind. Constraints:</p>
+<ul><li>No more than one stylesheet line beyond <code>@import "tailwindcss";</code></li><li>At least one extracted component class</li><li>Full dark mode</li><li>Must match your Ch. 2 screenshot — then explain in 3 sentences why one approach was faster.</li></ul>
+<h2>🎯 Chapter Checkpoint</h2>
+<p><strong>Quiz (aim for 7/8):</strong></p>
+<ol><li>What CSS does <code>grid grid-cols-1 md:grid-cols-3 gap-6</code> generate?</li><li>When should you extract a component class?</li><li>How does the dark mode variant know when to activate?</li><li>What does <code>@apply</code> do, and one risk of overusing it?</li><li>Translate to utilities: <code>max-width: 32rem; margin-inline: auto; padding: 2rem</code>.</li><li>Why is <code>focus-visible:</code> preferred over <code>focus:</code>?</li><li>How do you define a brand color in v4?</li><li>Mobile-first in Tailwind means variants apply at which breakpoint and up?</li></ol>
+<p><strong>Mini-build:</strong> 10 minutes: a centered card with title, paragraph, primary + ghost buttons, hover states — utilities only.</p>
+<h2>📚 Reference Cheat Sheet — Tailwind</h2>
+<div class="table-wrap"><table><thead><tr><th>Task</th><th>Utilities</th></tr></thead><tbody>
+<tr><td>Center container</td><td><code>mx-auto max-w-6xl px-4</code></td></tr>
+<tr><td>Card</td><td><code>rounded-2xl border border-slate-200 bg-white p-6 shadow-sm</code></td></tr>
+<tr><td>Responsive grid</td><td><code>grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4</code></td></tr>
+<tr><td>Flex row, spaced</td><td><code>flex items-center justify-between gap-4</code></td></tr>
+<tr><td>Button</td><td><code>rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline-2 disabled:opacity-50</code></td></tr>
+<tr><td>Visually hidden</td><td><code>sr-only</code></td></tr>
+<tr><td>Shown on focus only</td><td><code>sr-only focus:not-sr-only</code></td></tr>
+<tr><td>Fluid spacing scale</td><td>0.25rem steps: <code>1</code>=4px, <code>4</code>=16px, <code>8</code>=32px, <code>16</code>=64px</td></tr>
+<tr><td>Breakpoints</td><td><code>sm</code>640, <code>md</code>768, <code>lg</code>1024, <code>xl</code>1280, <code>2xl</code>1536</td></tr>
+</tbody></table></div>
+<h2>🔗 Further Reading</h2>
+<ul><li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener">Tailwind CSS Docs</a></li><li><a href="https://tailwindcss.com/docs/upgrade-guide" target="_blank" rel="noopener">Tailwind v4 Upgrade Guide</a></li><li><a href="https://github.com/tailwindlabs/prettier-plugin-tailwindcss" target="_blank" rel="noopener">prettier-plugin-tailwindcss</a> — auto-sorts class attributes</li></ul>
+<h3>🎉 You now know how to…</h3>
+<p>Style production-quality interfaces at speed with a consistent design system. Foundations and styling: done. Next, the language that makes pages <em>think</em>.</p>
+<hr>
+<h1 id="chapter-4-javascript-making-pages-think" class="chapter-title">CHAPTER 4 — JavaScript: Making Pages Think</h1>
+<p><em>Detailed Outline</em></p>
+<h2>🎯 Learning Objectives</h2>
+<ol><li>Write modern ES6+ JavaScript fluently (variables, functions, arrays, objects, destructuring, spread).</li><li>Manipulate the DOM and respond to events.</li><li>Handle asynchrony with promises and <code>async/await</code>, including <code>fetch</code>.</li><li>Structure code with modules and handle errors deliberately.</li><li>Build an interactive, data-driven page with zero frameworks.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>JavaScript is the only language browsers run natively. React, Next.js, Node, Express — all of it is JavaScript. Chapters 5–9 are, in a sense, applied JavaScript.</p>
+<h2>🧠 Core Concepts (sub-sections)</h2>
+<ul><li><strong>4.1 Language Basics:</strong> <code>const</code>/<code>let</code>, template literals, functions (declarations, arrows), conditionals, loops, truthiness. Code: a <code>formatPrice</code> function using template literals.</li><li><strong>4.2 Data Structures:</strong> arrays (<code>map</code>, <code>filter</code>, <code>reduce</code>, <code>find</code>), objects, destructuring, spread/rest, optional chaining (<code>?.</code>), nullish coalescing (<code>??</code>). Code: transforming a product array into HTML cards.</li><li><strong>4.3 The DOM:</strong> selecting (<code>querySelector</code>), creating/modifying elements, classes, attributes, <code>textContent</code> vs <code>innerHTML</code>. Code: a theme toggle; a live character counter on a textarea.</li><li><strong>4.4 Events:</strong> <code>addEventListener</code>, event objects, delegation, <code>preventDefault</code>, form submission handling. Code: todo add-form using delegation on the list.</li><li><strong>4.5 Async JavaScript:</strong> call stack vs event loop (visual), promises, <code>async/await</code>, <code>Promise.all</code>, <code>try/catch</code>. Code: <code>fetch</code> users from JSONPlaceholder and render them; loading and error states.</li><li><strong>4.6 Modules &amp; Tooling:</strong> <code>import</code>/<code>export</code>, <code>script type="module"</code>, npm scripts, formatting/linting basics.</li><li><strong>4.7 Error Handling:</strong> throwing, catching, <code>finally</code>, validating user input, custom error messages in the UI.</li></ul>
+<h2>🔍 Annotated Walkthroughs</h2>
+<ul><li>Todo list: full CRUD in the DOM with event delegation + localStorage persistence.</li><li>Fetch + render: async data pipeline with skeleton loading and error UI.</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<p><code>var</code> hoisting surprises; <code>==</code> vs <code>===</code>; mutating state in <code>map</code>; <code>innerHTML</code> XSS; forgetting <code>await</code>; <code>this</code> in arrow functions; <code>fetch</code> doesn't reject on HTTP errors (check <code>response.ok</code>); off-by-one loops.</p>
+<h2>🧪 Guided Exercises</h2>
+<ol><li>Number guesser (DOM + conditionals).</li><li>Shopping cart total with <code>reduce</code>.</li><li>Live search filter (events + array methods).</li><li>Fetch and render posts with loading/error states.</li><li>Theme toggle persisted to <code>localStorage</code> (reused from Ch. 3!).</li></ol>
+<h2>🏋️ Solo Challenge</h2>
+<p><strong>"DevBlog Lite":</strong> fetch posts from a public API, render cards, live category filter, detail modal, dark-mode toggle. No frameworks, one HTML file + modules.</p>
+<h2>🎯 Checkpoint</h2>
+<p>Quiz: event loop order, <code>map</code> vs <code>forEach</code>, <code>async</code> function return type, <code>?.</code> behavior, delegation benefits, why <code>fetch</code> needs <code>response.ok</code>. Mini-build: counter + fetch joke button in 15 min.</p>
+<h2>📚 Cheat Sheet</h2>
+<p><code>querySelector</code>, array methods table, async pattern template, module syntax, error handling template.</p>
+<h2>🔗 Further Reading</h2>
+<p><em>Eloquent JavaScript</em> (free), MDN JS Guide, web.dev "JavaScript" learning path, javascript.info.</p>
+<hr>
+<h1 id="chapter-5-react-component-architecture" class="chapter-title">CHAPTER 5 — React: Component Architecture</h1>
+<p><em>Detailed Outline</em></p>
+<h2>🎯 Learning Objectives</h2>
+<ol><li>Build UIs from composable components with props.</li><li>Manage local and shared state with hooks (<code>useState</code>, <code>useEffect</code>, <code>useContext</code>).</li><li>Write and reuse custom hooks.</li><li>Handle forms and user input the React way.</li><li>Route a SPA and choose a state-management approach.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>React's model — UI as a function of state — is the dominant frontend paradigm. The mental model you build here transfers to React Native, Next.js, and most modern UI work. (Spiral: state was localStorage in Ch. 4, becomes <code>useState</code> here, becomes server state in Ch. 6.)</p>
+<h2>🧠 Core Concepts (sub-sections)</h2>
+<ul><li><strong>5.1 Thinking in Components:</strong> decomposition, composition, children; JSX rules. Code: <code>&lt;Button variant="primary"&gt;</code>.</li><li><strong>5.2 Props &amp; Rendering:</strong> one-way data flow, <code>key</code> prop, conditional rendering, lists. Code: reusable <code>CardList</code>.</li><li><strong>5.3 State with <code>useState</code>:</strong> immutability, updater functions, derived state vs stored state. Code: counter, then a todo list.</li><li><strong>5.4 Effects with <code>useEffect</code>:</strong> dependency arrays, cleanup, fetching, subscriptions; rules of hooks. Code: search-as-you-type with debounce.</li><li><strong>5.5 Context &amp; Custom Hooks:</strong> prop drilling to Context; extracting <code>useLocalStorage</code>, <code>useFetch</code>. Code: theme context (revisit Ch. 3/4 toggle!).</li><li><strong>5.6 Forms:</strong> controlled inputs, validation, form libraries mention (React Hook Form). Code: sign-up form with per-field errors.</li><li><strong>5.7 Routing &amp; State Management:</strong> React Router (routes, params, navigation); when Context isn't enough (Zustand/Redux overview).</li><li><strong>5.8 Accessibility in React:</strong> semantic JSX, labels with <code>htmlFor</code>, focus management in modals, <code>aria-live</code> for dynamic content.</li></ul>
+<h2>🔍 Annotated Walkthroughs</h2>
+<ul><li>Full todo app: component tree, lifted state, custom <code>useTodos</code> hook with <code>localStorage</code>.</li><li><code>useEffect</code> data-fetch: loading/error/success render pattern (the same states as Ch. 4 — spiral).</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<p>Mutating state directly; missing/stale dependency arrays; overusing Context; keys as array indexes; <code>useEffect</code> for things computable in render; giant components; forgetting cleanup (subscriptions, timers).</p>
+<h2>🧪 Guided Exercises</h2>
+<ol><li>Component props drill (avatar + badge).</li><li>Live counter with derived stats.</li><li>Debounced search via <code>useEffect</code>.</li><li><code>useLocalStorage</code> custom hook.</li><li>Multi-step form with validation.</li></ol>
+<h2>🏋️ Solo Challenge</h2>
+<p><strong>"DevBlog Full":</strong> rebuild Ch. 4's Solo Challenge in React — routing, context-based theme, custom <code>useFetch</code> hook, accessible modal.</p>
+<h2>🎯 Checkpoint</h2>
+<p>Quiz: why immutability, dependency array semantics, when Context re-renders, controlled vs uncontrolled, <code>key</code> purpose, cleanup timing. Mini-build: cart with add/remove/quantity + total in 20 min.</p>
+<h2>📚 Cheat Sheet</h2>
+<p>Hooks table, rendering patterns, custom hook template, Context template, React Router snippets.</p>
+<h2>🔗 Further Reading</h2>
+<p>react.dev (new docs, with interactive sandboxes), <em>The Road to React</em>, Kent C. Dodds' blog.</p>
+<hr>
+<h1 id="chapter-6-nextjs-the-production-frontend" class="chapter-title">CHAPTER 6 — Next.js: The Production Frontend</h1>
+<p><em>Detailed Outline</em></p>
+<h2>🎯 Learning Objectives</h2>
+<ol><li>Explain file-based routing and the App Router's server/client component model.</li><li>Choose and implement SSR, SSG, and ISR for any page.</li><li>Fetch data in server components with caching controls.</li><li>Build API routes and handle metadata/SEO.</li><li>Deploy a production Next.js app on Vercel.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>Next.js turns React into a full production framework: routing, rendering strategy, data fetching, SEO, and deployment handled by convention. Most React job postings list it. This is where your Ch. 4–5 skills meet the server.</p>
+<h2>🧠 Core Concepts (sub-sections)</h2>
+<ul><li><strong>6.1 Setup &amp; App Router anatomy:</strong> <code>app/</code> directory, <code>layout.tsx</code>, <code>page.tsx</code>, <code>loading.tsx</code>, <code>error.tsx</code>, <code>not-found.tsx</code> conventions.</li><li><strong>6.2 Server vs Client Components:</strong> <code>'use client'</code> directive; where state/effects/browser APIs live; composition patterns. Code: server page fetching a list + client interactive card.</li><li><strong>6.3 Data Fetching &amp; Caching:</strong> <code>fetch</code> with <code>cache</code>, <code>revalidate</code>, <code>dynamic</code>; the request memoization model; when to reach for route handlers.</li><li><strong>6.4 Rendering Strategies:</strong> SSG (default), SSR (<code>dynamic = 'force-dynamic'</code>), ISR (<code>revalidate</code>); choosing per route. Table comparing TTFB/staleness/freshness.</li><li><strong>6.5 Dynamic Routes &amp; Navigation:</strong> <code>[id]</code> segments, <code>generateStaticParams</code>, <code>Link</code> vs <code>useRouter</code>, prefetching.</li><li><strong>6.6 API Routes &amp; Server Actions:</strong> route handlers (<code>route.ts</code>), mutations via Server Actions, revalidation after writes.</li><li><strong>6.7 Metadata &amp; SEO:</strong> <code>metadata</code> export, Open Graph, sitemaps, <code>robots.txt</code>.</li><li><strong>6.8 Accessibility &amp; Performance:</strong> image optimization, font optimization, route-level a11y audits.</li></ul>
+<h2>🔍 Annotated Walkthroughs</h2>
+<ul><li>Blog: SSG post list + ISR post pages + dynamic OG metadata.</li><li>Dashboard: server component data fetch + client filtering, loading/error boundaries wired via conventions.</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<p>Adding <code>'use client'</code> at the top of everything; fetching in client components when the server could; fighting the cache model instead of learning it; layout vs template confusion; env vars exposure (<code>NEXT_PUBLIC_</code> prefix).</p>
+<h2>🧪 Guided Exercises</h2>
+<ol><li>Multi-page site with layouts + nav.</li><li>SSG product catalog with ISR details.</li><li>Search with server-side fetching.</li><li>API route + client consumption.</li><li>Metadata/OG for social sharing.</li></ol>
+<h2>🏋️ Solo Challenge</h2>
+<p><strong>"DevBlog SSR":</strong> blog with SSG list, ISR articles, tag pages (<code>generateStaticParams</code>), search, OG images, 90+ Lighthouse.</p>
+<h2>🎯 Checkpoint</h2>
+<p>Quiz: server vs client component rules, ISR semantics, where layouts re-render, cache invalidation options, metadata API. Mini-build: one page + one dynamic route + loading state in 25 min.</p>
+<h2>📚 Cheat Sheet</h2>
+<p>App Router conventions table, fetching cache options, rendering strategy chooser, metadata fields.</p>
+<h2>🔗 Further Reading</h2>
+<p>nextjs.org/docs, Vercel Next.js Learn course, Lee Robinson's blog.</p>
+<hr>
+<h1 id="chapter-7-backend-foundations-nodejs-express-res" class="chapter-title">CHAPTER 7 — Backend Foundations: Node.js, Express, REST</h1>
+<p><em>Detailed Outline</em></p>
+<h2>🎯 Learning Objectives</h2>
+<ol><li>Run JavaScript on the server with Node.js and understand its event-driven model.</li><li>Build a REST API with Express: routes, controllers, middleware.</li><li>Validate input and structure JSON responses consistently.</li><li>Manage configuration with environment variables.</li><li>Test API endpoints and handle errors centrally.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>Everything you've built so far lives in the browser and vanishes on refresh. The backend is where identity, data, and business logic survive. Same language (JavaScript), new runtime — your Ch. 4 async skills transfer directly.</p>
+<h2>🧠 Core Concepts (sub-sections)</h2>
+<ul><li><strong>7.1 Node.js Runtime:</strong> event loop on the server, modules (ESM), <code>package.json</code> scripts, npm vs npx. Code: a file-read server script.</li><li><strong>7.2 Express Basics:</strong> app setup, <code>app.get/post/put/delete</code>, <code>req</code>/<code>res</code> objects, <code>express.json()</code>, route params &amp; query strings. Code: in-memory tasks CRUD.</li><li><strong>7.3 REST Design:</strong> resources, nouns not verbs, status codes (200/201/204/400/401/404/500), versioning, pagination shape. Table: endpoint design for TaskFlow.</li><li><strong>7.4 Middleware:</strong> request pipeline diagram; logging, <code>cors</code>, JSON parsing, custom validators, error-handling middleware (4 args). Code: request logger + global error handler.</li><li><strong>7.5 Env &amp; Config:</strong> <code>.env</code>, <code>dotenv</code>, never commit secrets, config module pattern.</li><li><strong>7.6 Validation &amp; Security Headers:</strong> <code>zod</code> schemas, <code>helmet</code>, rate limiting mention.</li><li><strong>7.7 Testing APIs:</strong> Vitest + Supertest smoke tests; health-check endpoint.</li></ul>
+<h2>🔍 Annotated Walkthroughs</h2>
+<ul><li>Full in-memory tasks API: layered structure (<code>routes/</code> -&gt; <code>controllers/</code> -&gt; validation middleware -&gt; error handler).</li><li>Request lifecycle: a single POST traced through every middleware.</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<p>Forgetting <code>express.json()</code>; blocking the event loop with sync file ops; inconsistent error shapes; trusting client input; CORS misconfiguration; async errors not reaching error middleware.</p>
+<h2>🧪 Guided Exercises</h2>
+<ol><li>Hello API with routes + JSON.</li><li>CRUD with status-code discipline.</li><li>Validation middleware with <code>zod</code>.</li><li>Logger + global error handler.</li><li>Env-based config + health check.</li></ol>
+<h2>🏋️ Solo Challenge</h2>
+<p><strong>"Notes API":</strong> full CRUD, pagination, filtering, validation, consistent error format, tested with a <code>.http</code> file or Postman collection — exported and committed.</p>
+<h2>🎯 Checkpoint</h2>
+<p>Quiz: middleware order, 201 vs 204, why error middleware takes 4 args, event-loop blocking, env secrets handling. Mini-build: quotes CRUD API in 30 min.</p>
+<h2>📚 Cheat Sheet</h2>
+<p>Express snippets table, status code reference, REST naming conventions, error format standard.</p>
+<h2>🔗 Further Reading</h2>
+<p>Node.js docs, Express guide, <em>Node.js Design Patterns</em> (advanced), zod docs.</p>
+<hr>
+<h1 id="chapter-8-databases-auth-data-that-persists" class="chapter-title">CHAPTER 8 — Databases &amp; Auth: Data That Persists</h1>
+<p><em>Detailed Outline</em></p>
+<h2>🎯 Learning Objectives</h2>
+<ol><li>Choose between SQL and NoSQL for a given problem with justification.</li><li>Model and query a relational database via Prisma.</li><li>Hash passwords and implement session- and token-based authentication.</li><li>Enforce authorization on protected routes.</li><li>Apply OWASP top-10 basics to a real API.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>Chapter 7's data died when the server restarted. Real applications must store data safely for years — and prove that only the right people can touch it. Auth and security are where "it works on my machine" meets "it must never leak a password."</p>
+<h2>🧠 Core Concepts (sub-sections)</h2>
+<ul><li><strong>8.1 SQL vs NoSQL:</strong> relational integrity vs flexible documents; decision table; ACID intro. Code: same TaskFlow schema modeled both ways.</li><li><strong>8.2 Prisma + SQLite/Postgres:</strong> schema, migrations, client queries, relations, transactions. Code: full TaskFlow schema + relation queries.</li><li><strong>8.3 Passwords &amp; Hashing:</strong> bcrypt/argon2, salt + cost factor; why never store plaintext; timing attacks mention. Code: hash + verify flow.</li><li><strong>8.4 Authentication Strategies:</strong> sessions + cookies vs JWT (stateless); OAuth/OIDC overview; login/register endpoints. Code: both implementations side-by-side.</li><li><strong>8.5 Authorization:</strong> middleware that checks ownership (<code>req.user.id === task.userId</code>); role-based access intro.</li><li><strong>8.6 Security Basics:</strong> OWASP Top 10 mapped to mitigations — SQL injection (parameterized queries via ORM), XSS, CSRF, rate limiting, secure headers, secret storage. Checklist format.</li></ul>
+<h2>🔍 Annotated Walkthroughs</h2>
+<ul><li>Register -&gt; login -&gt; protected CRUD: full auth flow traced, password hashing to JWT verification.</li><li>Prisma schema -&gt; migration -&gt; seed -&gt; relation query walkthrough.</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<p>Rolling your own crypto; JWTs in localStorage vs cookies tradeoffs; missing ownership checks (IDOR!); migrations edited by hand; N+1 queries; expired tokens mishandled; trusting <code>req.body.userId</code> from the client.</p>
+<h2>🧪 Guided Exercises</h2>
+<ol><li>Prisma schema + migration for a library app.</li><li>Hash/verify CLI script.</li><li>Register + login with JWT.</li><li>Ownership-guard middleware.</li><li>Rate-limit the login route.</li></ol>
+<h2>🏋️ Solo Challenge</h2>
+<p><strong>"Secure Notes API":</strong> users own notes; register/login, JWT auth, full CRUD with ownership checks, rate-limited auth routes, Prisma migrations committed, seed script, README security notes.</p>
+<h2>🎯 Checkpoint</h2>
+<p>Quiz: bcrypt cost factor, session vs JWT tradeoffs, IDOR definition + fix, why parameterized queries, token storage options. Mini-build: auth-guarded route in 25 min.</p>
+<h2>📚 Cheat Sheet</h2>
+<p>Prisma schema snippets, auth flow diagram (text), JWT middleware template, security checklist.</p>
+<h2>🔗 Further Reading</h2>
+<p>Prisma docs, OWASP Top 10, <em>Web Application Hacker's Handbook</em> (advanced), Auth0/JWT.io intros.</p>
+<hr>
+<h1 id="chapter-9-integration-deployment-shipping-for-re" class="chapter-title">CHAPTER 9 — Integration &amp; Deployment: Shipping for Real</h1>
+<p><em>Detailed Outline</em></p>
+<h2>🎯 Learning Objectives</h2>
+<ol><li>Connect a Next.js frontend to an Express backend end-to-end.</li><li>Manage environment variables across local, staging, and production.</li><li>Deploy frontend (Vercel) and backend (Render) with CI via GitHub Actions.</li><li>Add monitoring, logging, and health checks.</li><li>Write a production-readiness checklist and act on it.</li></ol>
+<h2>📖 Why This Matters</h2>
+<p>Deployed and monitored beats perfect and local. Interviewers click your live URL; employers read your README; users don't care about your code — they care that it works at 3 a.m. This chapter turns a project into a portfolio piece.</p>
+<h2>🧠 Core Concepts (sub-sections)</h2>
+<ul><li><strong>9.1 Full-Stack Wiring:</strong> CORS in production, proxying, API client abstraction in Next.js, cookie domains, env var contract between frontend/backend. Code: typed fetch wrapper with error normalization.</li><li><strong>9.2 Environment Strategy:</strong> <code>.env.local</code> / <code>.env.production</code>, <code>NEXT_PUBLIC_</code> rules, secrets in hosting dashboards, never in git. Table: which env var lives where.</li><li><strong>9.3 Deployment:</strong> Vercel (frontend, zero-config), Render/Railway/Fly (backend + Postgres), build scripts, start commands. Step-by-step runbook.</li><li><strong>9.4 CI/CD:</strong> GitHub Actions pipeline — lint -&gt; test -&gt; build -&gt; deploy; preview deployments; branch protection. YAML walkthrough.</li><li><strong>9.5 Monitoring &amp; Ops:</strong> structured logging, Sentry for errors, uptime checks, health endpoints, analytics basics; graceful shutdown.</li><li><strong>9.6 The Production Checklist:</strong> HTTPS, security headers, backups, rollback plan, README quality.</li></ul>
+<h2>🔍 Annotated Walkthroughs</h2>
+<ul><li>One commit -&gt; CI green -&gt; both deployments live: full pipeline trace.</li><li>Sentry integration: from thrown error to alert.</li></ul>
+<h2>⚠️ Common Mistakes &amp; Gotchas</h2>
+<p>CORS wildcard <code>*</code> with credentials; leaking <code>NEXT_PUBLIC_</code> secrets; deploys that work locally but fail (missing <code>engines</code>, build scripts); no health check so platform kills "unhealthy" services; untested rollback path.</p>
+<h2>🧪 Guided Exercises</h2>
+<ol><li>Local full-stack wiring (Next + Express + CORS).</li><li>Env contract doc + validation at boot.</li><li>Deploy frontend to Vercel.</li><li>Deploy API + DB to Render with migrations.</li><li>GitHub Actions pipeline for lint+test.</li></ol>
+<h2>🏋️ Solo Challenge</h2>
+<p>Take your Ch. 8 Solo Challenge, build a minimal Next.js UI on top, deploy both, wire CI, add Sentry + uptime check. Document everything in README.</p>
+<h2>🎯 Checkpoint</h2>
+<p>Quiz: <code>NEXT_PUBLIC_</code> semantics, why <code>*</code> CORS + credentials fails, CI pipeline order, health check purpose, rollback strategy. Mini-build: GitHub Actions YAML for test+deploy from memory.</p>
+<h2>📚 Cheat Sheet</h2>
+<p>Deploy runbooks (Vercel/Render), env var table template, CI YAML template, production checklist (30 items).</p>
+<h2>🔗 Further Reading</h2>
+<p>Vercel docs, Render docs, GitHub Actions docs, Sentry docs, Google SRE book (chapters free online).</p>
+<hr>
+<h1 id="capstone-project-brief-taskflow" class="chapter-title">Capstone Project Brief: TaskFlow</h1>
+<h2>The Product</h2>
+<p>A full-stack project board for small teams: <strong>authentication, team workspaces, task CRUD with drag-and-drop statuses, real-time presence (poll-based or WebSockets), and a personal dashboard.</strong></p>
+<h2>Milestones Mapped to Chapters</h2>
+<div class="table-wrap"><table><thead><tr><th>Milestone</th><th>Chapters</th><th>Deliverable</th></tr></thead><tbody>
+<tr><td>M1: Marketing site + design system</td><td>1–3</td><td>Landing page, dark mode, component library</td></tr>
+<tr><td>M2: Interactive prototype</td><td>4</td><td>Client-side board with localStorage</td></tr>
+<tr><td>M3: React application</td><td>5</td><td>Componentized app, routing, context</td></tr>
+<tr><td>M4: Production frontend</td><td>6</td><td>Next.js app with SSR/ISR, SEO metadata</td></tr>
+<tr><td>M5: API + database</td><td>7–8</td><td>Express + Prisma API, JWT auth, tested</td></tr>
+<tr><td>M6: Shipped product</td><td>9</td><td>Deployed, CI, monitoring, README, demo video</td></tr>
+</tbody></table></div>
+<h2>Deliverables</h2>
+<ul><li>GitHub repo (clean history, conventional commits)</li><li>README: setup, architecture diagram, env template, screenshots</li><li>Deployed URL (frontend + API)</li><li>3–5 minute demo video</li><li>Written reflection: 3 hardest bugs + how you solved them</li></ul>
+<h2>Grading Rubric</h2>
+<div class="table-wrap"><table><thead><tr><th>Criterion</th><th>Weight</th><th>Excellent (A)</th><th>Pass (C)</th></tr></thead><tbody>
+<tr><td>Functionality (all milestones)</td><td>25%</td><td>Every milestone complete + extras (invites, search)</td><td>Core CRUD works</td></tr>
+<tr><td>Code quality &amp; architecture</td><td>20%</td><td>Layered, typed, consistent conventions</td><td>Works but monolithic</td></tr>
+<tr><td>Security &amp; accessibility</td><td>20%</td><td>Auth/ownership enforced, WCAG AA pass, headers</td><td>Basic auth only</td></tr>
+<tr><td>Deployment &amp; reliability</td><td>15%</td><td>CI/CD, monitoring, health checks, rollback plan</td><td>Deployed manually</td></tr>
+<tr><td>Documentation &amp; communication</td><td>10%</td><td>README + video + reflection are portfolio-grade</td><td>Minimal README</td></tr>
+<tr><td>Testing</td><td>10%</td><td>API integration tests + critical UI paths</td><td>Handful of tests</td></tr>
+</tbody></table></div>
+<hr>
+<h1 id="appendices" class="chapter-title">Appendices</h1>
+<h2>A. Git &amp; GitHub Cheat Sheet</h2>
+<p><em>Outline</em> — init/clone, staging, commits, branching (<code>checkout -b</code>, merge vs rebase basics), remotes, PR workflow, <code>.gitignore</code> essentials, undo recipes (<code>restore</code>, <code>reset</code>, <code>revert</code>), conventional commits.</p>
+<h2>B. Terminal / CLI Basics</h2>
+<p><em>Outline</em> — navigation (<code>pwd</code>, <code>ls</code>, <code>cd</code>), files (<code>mkdir</code>, <code>touch</code>, <code>cp</code>, <code>mv</code>, <code>rm</code>), searching (<code>grep</code>, <code>find</code>), pipes &amp; redirection, <code>curl</code>, package scripts, PATH explained, common shell configs.</p>
+<h2>C. DevTools Guide</h2>
+<p><em>Outline</em> — Elements (live editing, box model overlay), Console (filtering, <code>console.table</code>), Network (throttling, payload inspection), Sources (breakpoints, conditional breakpoints), Application (storage, cookies), Lighthouse audits, Performance tab basics.</p>
+<h2>D. Debugging Playbook</h2>
+<p><em>Outline</em> — the systematic loop: reproduce -&gt; isolate -&gt; hypothesize -&gt; test -&gt; fix -&gt; prevent. Rubber-ducking, <code>console.log</code> vs breakpoints, bisecting with <code>git</code>, error-reading literacy (stack traces), a "top 20 web errors" table with fixes.</p>
+<h2>E. Glossary (100+ terms)</h2>
+<p><em>Outline</em> — A–Z: accessibility, API, arity, atomic CSS, authentication, authorization, bundler, CORS, CRUD, CSR/SSR/SSG/ISR, CDN, CI/CD, closure, coercion, component, context, cookie, DTO, event loop, hydration, IDOR, JWT, middleware, migration, memoization, ORM, prop drilling, reconciliation, REST, semantic HTML, session, SQL injection, state, token, virtual DOM, WCAG, webhook, XSS… (full 100+ list maintained in final print edition).</p>
+<h2>F. Interview Prep Questions (by technology)</h2>
+<p><em>Outline</em> — HTML/CSS: box model, specificity, accessibility scenarios. JS: closures, event loop, <code>this</code>, promises. React: hooks rules, reconciliation, state strategies. Next.js: rendering tradeoffs. Backend: REST design, auth flows, SQL vs NoSQL. System design lite: design a URL shortener; behavioral: "tell me about a bug you shipped."</p>
+<h2>G. Recommended Resources &amp; Communities</h2>
+<p><em>Outline</em> — MDN, web.dev, freeCodeCamp, The Odin Project, JavaScript.info, Frontend Masters, r/learnprogramming, Discord servers (Reactiflux, The Odin Project), local meetups, RSS/blogs worth following, conference talks (must-watch list).</p>
+<hr>
+<h1 id="7-progress-tracker" class="chapter-title">7. Progress Tracker</h1>
+<p>Check off exercises as you complete them — progress is saved in your browser automatically.</p>
+<div id="tracker-app"></div>
+<h3>Weekly Cadence Tracker</h3>
+<div class="table-wrap"><table><thead><tr><th>Week</th><th>Hours Planned</th><th>Hours Done</th><th>Chapters Touched</th><th>One thing I built</th></tr></thead><tbody>
+<tr><td>1</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td></td><td></td><td></td><td></td></tr>
+</tbody></table></div>
+<hr>
+<h1 id="8-icon-convention-glossary-quick-reference" class="chapter-title">8. Icon &amp; Convention Glossary (Quick Reference)</h1>
+<div class="table-wrap"><table><thead><tr><th>Symbol / Convention</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>💡</td><td>Tip — practical, from real projects</td></tr>
+<tr><td>⚠️</td><td>Warning — common, time-wasting trap</td></tr>
+<tr><td>🧪</td><td>Guided Exercise — do before reading solutions</td></tr>
+<tr><td>🏋️</td><td>Solo Challenge — unguided; struggle 30+ min first</td></tr>
+<tr><td>🎯</td><td>Checkpoint — quiz + mini-build; under 70% -&gt; revisit</td></tr>
+<tr><td>📚</td><td>Cheat Sheet — desk reference, print it</td></tr>
+<tr><td>🔗</td><td>Further Reading — do at least one per chapter</td></tr>
+<tr><td><code>[DIAGRAM: ...]</code></td><td>Illustration placeholder for the print edition</td></tr>
+<tr><td><strong>Spiral tags</strong> like <em>(revisited in Ch. N)</em></td><td>Concepts intentionally recur across chapters</td></tr>
+</tbody></table></div>
+<hr>
+<blockquote><strong>Final word from your instructor:</strong> Nobody learns the web by reading about it. By Chapter 9 you will have shipped roughly a dozen projects. Some will break. That breakage is the curriculum. Keep building.</blockquote>
+    </div>
+  </main>
+</div>
+<script>
+(function(){
+  var root=document.documentElement;
+  // ---------- Theme ----------
+  var savedTheme=localStorage.getItem('booklet-theme');
+  if(savedTheme){root.setAttribute('data-theme',savedTheme);}
+  else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){root.setAttribute('data-theme','dark');}
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);localStorage.setItem('booklet-theme',next);
+    this.textContent=next==='dark'?'☀️ Light':'🌙 Dark';
+  });
+  document.getElementById('themeBtn').textContent=root.getAttribute('data-theme')==='dark'?'☀️ Light':'🌙 Dark';
+
+  // ---------- Sidebar / mobile ----------
+  var sidebar=document.getElementById('sidebar');
+  document.getElementById('menuBtn').addEventListener('click',function(){sidebar.classList.toggle('open');});
+  document.getElementById('printBtn').addEventListener('click',function(){window.print();});
+
+  // ---------- Build nav from h1s ----------
+  var h1s=[].slice.call(document.querySelectorAll('.chapter-title'));
+  var nav=document.getElementById('nav');
+  h1s.forEach(function(h,i){
+    var a=document.createElement('a');
+    a.className='navlink';a.href='#'+h.id;
+    var label=h.textContent.replace(/\s+/g,' ').trim();
+    a.innerHTML='<span>'+label+'</span>'+(i>=3&&i<=11?'<span class="sub">Chapter '+(i-2)+'</span>':'');
+    a.addEventListener('click',function(){if(window.innerWidth<=900)sidebar.classList.remove('open');});
+    nav.appendChild(a);
+  });
+
+  // ---------- Search filter ----------
+  document.getElementById('search').addEventListener('input',function(){
+    var q=this.value.toLowerCase();
+    [].forEach.call(nav.children,function(a){
+      a.style.display=a.textContent.toLowerCase().indexOf(q)>-1?'':'none';
+    });
+  });
+
+  // ---------- Scroll spy ----------
+  var links={};[].forEach.call(nav.children,function(a){links[a.getAttribute('href').slice(1)]=a;});
+  var spy=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        [].forEach.call(nav.children,function(a){a.classList.remove('active');});
+        var l=links[e.target.id];if(l)l.classList.add('active');
+        if(l&&window.innerWidth>900)l.scrollIntoView({block:'nearest'});
+      }
+    });
+  },{rootMargin:'-80px 0px -65% 0px'});
+  h1s.forEach(function(h){spy.observe(h);});
+
+  // ---------- Callout coloring ----------
+  [].forEach.call(document.querySelectorAll('blockquote'),function(b){
+    var t=b.textContent.trim();
+    if(t.indexOf('💡')===0)b.classList.add('tip');
+    else if(t.indexOf('⚠️')===0)b.classList.add('warn');
+    else if(t.indexOf('🧪')===0)b.classList.add('exercise');
+  });
+
+  // ---------- Back-to-top links ----------
+  h1s.forEach(function(h,i){
+    if(i===0)return;
+    var a=document.createElement('a');a.className='backtop';a.href='#top';a.textContent='↑ Back to top';
+    h.parentNode.insertBefore(a,h);
+  });
+
+  // ---------- Progress tracker ----------
+  var CHAPTERS=[
+    {id:'ch1',label:'Chapter 1 — HTML',ex:['1.1 Personal Profile','1.2 Semantic Autopsy','1.3 Registration Form','1.4 Accessibility Audit']},
+    {id:'ch2',label:'Chapter 2 — CSS',ex:['2.1 Specificity Detective','2.2 Holy Grail Layout','2.3 Flexbox Nav Bar','2.4 Responsive Card Grid','2.5 Fluid Type + Variables']},
+    {id:'ch3',label:'Chapter 3 — Tailwind',ex:['3.1 Utility Translation','3.2 Stats Bar','3.3 Button System','3.4 Dark Mode Toggle Prep']},
+    {id:'ch4',label:'Chapter 4 — JavaScript',ex:['4.1 Number Guesser','4.2 Cart Total (reduce)','4.3 Live Search Filter','4.4 Fetch + Render','4.5 Theme Toggle (localStorage)']},
+    {id:'ch5',label:'Chapter 5 — React',ex:['5.1 Props Drill','5.2 Live Counter','5.3 Debounced Search','5.4 useLocalStorage Hook','5.5 Multi-step Form']},
+    {id:'ch6',label:'Chapter 6 — Next.js',ex:['6.1 Multi-page Site','6.2 SSG + ISR Catalog','6.3 Server Search','6.4 API Route + Client','6.5 Metadata / OG']},
+    {id:'ch7',label:'Chapter 7 — Backend',ex:['7.1 Hello API','7.2 CRUD Status Codes','7.3 zod Validation','7.4 Logger + Errors','7.5 Env Config + Health']},
+    {id:'ch8',label:'Chapter 8 — Databases & Auth',ex:['8.1 Prisma Schema','8.2 Hash/Verify','8.3 JWT Login','8.4 Ownership Guard','8.5 Rate Limit Login']},
+    {id:'ch9',label:'Chapter 9 — Integration & Deploy',ex:['9.1 Full-Stack Wiring','9.2 Env Contract','9.3 Deploy to Vercel','9.4 Deploy API + DB','9.5 CI Pipeline']},
+    {id:'cap',label:'Capstone — TaskFlow',ex:['M1 Marketing Site','M2 Prototype','M3 React App','M4 Next.js Frontend','M5 API + Database','M6 Shipped Product']}
+  ];
+  var KEY='booklet-progress-v1';
+  var store={};
+  try{store=JSON.parse(localStorage.getItem(KEY)||'{}');}catch(e){store={};}
+  function save(){localStorage.setItem(KEY,JSON.stringify(store));}
+  function get(ch,field,def){return (store[ch]&&store[ch][field]!==undefined)?store[ch][field]:def;}
+  function set(ch,field,val){store[ch]=store[ch]||{};store[ch][field]=val;save();renderProgress();}
+
+  var app=document.getElementById('tracker-app');
+  var head=document.createElement('div');head.className='tracker-head';
+  head.innerHTML='<div class="progress-shell"><div class="progress-bar" id="pbar"></div></div><span class="progress-label" id="plabel"></span>';
+  app.appendChild(head);
+  var list=document.createElement('div');
+  CHAPTERS.forEach(function(ch){
+    var total=ch.ex.length;
+    var box=document.createElement('div');box.className='t-chapter';box.id='tc-'+ch.id;
+    box.innerHTML=
+      '<div class="t-ch-head"><span class="arrow">▶</span><span class="t-title">'+ch.label+'</span>'+
+      '<span class="t-done" id="done-'+ch.id+'"></span></div>'+
+      '<div class="t-body">'+
+        ch.ex.map(function(e,i){
+          return '<label class="t-ex"><input type="checkbox" data-ch="'+ch.id+'" data-i="'+i+'"><span>'+e+'</span></label>';
+        }).join('')+
+        '<div class="t-meta">'+
+          '<label>Finished <input type="date" data-ch="'+ch.id+'" data-f="date"></label>'+
+          '<label>Confidence <select data-ch="'+ch.id+'" data-f="conf">'+
+            '<option value="">—</option>'+[1,2,3,4,5].map(function(n){return '<option>'+n+'</option>';}).join('')+
+          '</select></label>'+
+          '<input type="text" placeholder="Notes…" data-ch="'+ch.id+'" data-f="notes">'+
+        '</div>'+
+        '<label class="ch-done-row"><input type="checkbox" data-ch="'+ch.id+'" data-f="chapterDone"> Chapter complete</label>'+
+      '</div>';
+    list.appendChild(box);
+  });
+  app.appendChild(list);
+  var reset=document.createElement('button');reset.className='reset-link';reset.textContent='Reset all progress';
+  reset.addEventListener('click',function(){
+    if(confirm('Reset all progress? This cannot be undone.')){store={};save();hydrate();renderProgress();}
+  });
+  app.appendChild(reset);
+
+  // hydrate
+  function hydrate(){
+    CHAPTERS.forEach(function(ch){
+      var box=document.getElementById('tc-'+ch.id);
+      var checks=box.querySelectorAll('input[type=checkbox][data-i]');
+      checks.forEach(function(c){c.checked=!!get(ch.id,'e'+c.dataset.i,false);});
+      box.querySelectorAll('.t-meta [data-f]').forEach(function(inp){
+        inp.value=get(ch.id,inp.dataset.f,inp.type==='date'?'':(inp.tagName==='SELECT'?'':''));
+      });
+      box.querySelector('input[data-f=chapterDone]').checked=!!get(ch.id,'chapterDone',false);
+    });
+  }
+  function renderProgress(){
+    var total=0,done=0;
+    CHAPTERS.forEach(function(ch){
+      var d=0;
+      ch.ex.forEach(function(_,i){total++;if(get(ch.id,'e'+i,false)){done++;d++;}});
+      document.getElementById('done-'+ch.id).textContent=d+'/'+ch.ex.length;
+      var box=document.getElementById('tc-'+ch.id);
+      box.classList.toggle('done-ch',!!get(ch.id,'chapterDone',false));
+    });
+    var pct=total?Math.round(done/total*100):0;
+    document.getElementById('pbar').style.width=pct+'%';
+    document.getElementById('plabel').textContent=pct+'% ('+done+'/'+total+')';
+  }
+
+  app.addEventListener('click',function(e){
+    var head=e.target.closest('.t-ch-head');
+    if(head){head.parentNode.classList.toggle('open');return;}
+    var cb=e.target.closest('input[type=checkbox][data-i]');
+    if(cb){
+      set(cb.dataset.ch,'e'+cb.dataset.i,cb.checked);
+      cb.nextElementSibling.classList.toggle('done',cb.checked);
+    }
+    var cd=e.target.closest('input[data-f=chapterDone]');
+    if(cd){set(cd.dataset.ch,'chapterDone',cd.checked);}
+  });
+  app.addEventListener('change',function(e){
+    var inp=e.target.closest('.t-meta [data-f]');
+    if(inp){set(inp.dataset.ch,inp.dataset.f,inp.value);}
+    var cb=e.target.closest('input[type=checkbox]');
+    if(cb&&cb.dataset.i!==undefined){cb.nextElementSibling.classList.toggle('done',cb.checked);}
+  });
+  hydrate();
+  // restore strikethrough visuals
+  CHAPTERS.forEach(function(ch){
+    var box=document.getElementById('tc-'+ch.id);
+    box.querySelectorAll('input[type=checkbox][data-i]').forEach(function(c){
+      c.nextElementSibling.classList.toggle('done',c.checked);
+    });
+  });
+  renderProgress();
+  document.getElementById('tc-ch1').classList.add('open');
+})();
+</script>
+</body>
+</html>
